@@ -1,0 +1,25 @@
+# Read the documentation: https://github.com/FriendsOfSymfony/FOSElasticaBundle/blob/master/Resources/doc/setup.md
+fos_elastica:
+    clients:
+        default: { host: localhost, port: 9200 }
+    indexes:
+        dk_task:
+            index_name:           ~
+            client:               ~
+            types:
+                product:
+                    properties:
+                        title: ~
+                        description: ~
+                        variant:
+                            type: object
+                            properties:
+                                color: ~
+                                price: ~
+                    persistence:
+                        driver: orm
+                        model: App\Entity\Product
+                        provider: ~
+                        finder: ~
+                        elastica_to_model_transformer:
+                            ignore_missing: true

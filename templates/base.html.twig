@@ -1,12 +1,55 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+<html lang="{{ app.request.locale }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {% block stylesheets %}
+        {# 'app' must match the first argument to addEntry() in webpack.config.js #}
+        {{ encore_entry_link_tags('app') }}
+
+        <!-- Renders a link tag (if your module requires any CSS)
+             <link rel="stylesheet" href="/build/app.css"> -->
+    {% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+</head>
+<body class="rtl">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ path('app_homepage') }}">{{ "Home" | trans }} <span
+                        class="sr-only">({{ "current" | trans }} )</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('product_index') }}">{{ "Product" | trans }}</a>
+            </li>
+            {% if app.user %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_login') }}">{{ app.user.nameFamily }}</a>
+                </li>
+            {% endif %}
+        </ul>
+        <form class="form-inline my-2 my-lg-0" action="{{ path('app_homepage') }}">
+            <input class="form-control mr-sm-2" name="s" type="search" {% if app.request.query.has("s") %}
+                   value="{{ app.request.query.filter("s")|trim }}" {% endif %}placeholder="{{ "Search"|trans }}"
+                   aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">{{ "Search"|trans }}</button>
+        </form>
+    </div>
+</nav>
+<div class="container">{% block body %}{% endblock %}</div>
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+
+    <!-- Renders app.js & a webpack runtime.js file
+        <script src="/build/runtime.js"></script>
+        <script src="/build/app.js"></script> -->
+{% endblock %}
+</body>
 </html>

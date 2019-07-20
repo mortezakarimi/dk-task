@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello DefaultController!{% endblock %}
+
+{% block body %}
+    {% for row in pagination|batch(3) %}
+        <div class="row"><!-- Row -->
+            {% for product in row %}
+                <!-- Col -->
+                <div class="col-md-4">{{ include('default/product_box.html.twig') }}</div><!-- /Col -->
+            {% endfor %}
+        </div><!-- /Row -->
+        {% else %}
+            <div class="alert alert-info" role="alert">
+                {% trans from 'messages' %}
+                Noting to show!
+                {% endtrans %}
+            </div>
+    {% endfor %}
+    <div class="row">
+        <div class="col">{{ knp_pagination_render(pagination) }}</div>
+    </div>
+{% endblock %}
