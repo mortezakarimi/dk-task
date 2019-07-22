@@ -10,7 +10,33 @@ Logout: خروج
 'Please sign in': 'لطفا وارد شوید'
 Search: جست‌وجو
 'View Product': 'مشاهده محصول'
-'Noting to show!': 'موردی برای نمایش وجود ندارد!'
 Home: خانه
 current: اکنون
-Product: محصولات
+Product: محصول
+Products: محصولات
+Title: عنوان
+Description: توضیحات
+CreatedAt: 'تاریج ایجاد'
+UpdatedAt: 'تاریخ بروزرسانی'
+Actions: عملیات
+Show: نمایش
+Edit: ویرایش
+'No records found!': 'هیچ رکوردی یافت نشد!'
+'Product List': 'لیست محصولات'
+'Create new': 'ایجاد جدید'
+Color: رنگ
+'Color code': 'کد رنگ'
+'Back to list': 'بازگشت به لیست'
+Price: قیمت
+Variant: متغییرها
+Save: ذخیره
+'Manage Products': 'مدیریت محصولات'
+'Edit Product': 'ویرایش محصول'
+'Create new Product': 'ثبت محصول جدید'
+'New Product': 'محصول جدید'
+'Are you sure you want to delete this item?': 'آیا شما مطمئن به حذف این مورد هستید؟'
+'No product found for id: 0': 'محصولی برای شناسه 0 یافت نشد'
+'Advance Search': 'جست‌و‌جو پیشرفته'
+'Min price': 'حداقل قیمت'
+'Max price': 'حداکثر قیمت'
+'Total Result: 0': 'تعدا نتایج: 0'

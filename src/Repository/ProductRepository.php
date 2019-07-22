@@ -26,7 +26,7 @@ class ProductRepository extends ServiceEntityRepository
     public function getWithOrderQueryBuilder(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('p')
-            ->innerJoin('p.variant', 'v')
+            ->leftJoin('p.variant', 'v')
             ->addSelect('v');
         return $qb->orderBy('p.createdAt', 'DESC');
     }

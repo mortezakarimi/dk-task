@@ -1,42 +1,55 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Product index{% endblock %}
+{% block title %}{{ "Product List"|trans }}{% endblock %}
 
 {% block body %}
-    <h1>Product index</h1>
+    <h1>{{ "Product List"|trans }}</h1>
 
+    <a class="btn btn-success mb-4 float-left" href="{{ path('product_new') }}">{{ "Create new"|trans }}</a>
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>#</th>
+            <th>{{ "Title" |trans }}</th>
+            <th>{{ "Description" |trans }}</th>
+            <th>{{ "Color" |trans }}</th>
+            <th>{{ "Actions" |trans }}</th>
+        </tr>
         </thead>
         <tbody>
         {% for product in pagination %}
             <tr>
                 <td>{{ product.id }}</td>
                 <td>{{ product.title }}</td>
-                <td>{{ product.description }}</td>
+                <td>{{ product.description|length > 100? product.description|slice(0, 100) ~ '...':product.description }}</td>
                 <td>
-                    {%  for variant in product.variant %}
-                        <span class="color" style="background-color:{{ variant.color }}"></span>
+                    {% for variant in product.variant %}
+                        <span class="color" data-toggle="tooltip" data-html="true"
+                              title="{{ "Color"|trans ~ " : "~ variant.color ~ "<br>"~"Price"|trans ~" : "~ variant.price|localizednumber }}"
+                              style="background-color:{{ variant.colorCode }}"></span>
                     {% endfor %}
                 </td>
-{#                <td>{{ product.createdAt ? product.createdAt|date('Y-m-d H:i:s', "Asia/Tehran") : '' }}</td>#}
-{#                <td>{{ product.updatedAt ? product.updatedAt|date('Y-m-d H:i:s') : '' }}</td>#}
-                <td>
-                    <a href="{{ path('product_show', {'id': product.id}) }}">show</a>
-                    <a href="{{ path('product_edit', {'id': product.id}) }}">edit</a>
+                {#                <td>{{ product.createdAt ? product.createdAt|date('Y-m-d H:i:s', "Asia/Tehran") : '' }}</td>#}
+                {#                <td>{{ product.updatedAt ? product.updatedAt|date('Y-m-d H:i:s') : '' }}</td>#}
+                <td class="text-nowrap">
+                    <a class="btn btn-link btn-block m-0 p-0" href="{{ path('product_show', {'id': product.id}) }}"><i
+                            class="fas fa-eye"></i></a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a class="btn btn-link btn-block m-0 p-0" href="{{ path('product_edit', {'id': product.id}) }}"><i
+                                class="fas fa-edit"></i></a>
+                        {{ include('product/_delete_link.html.twig') }}
+                    {% endif %}
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="6">no records found</td>
+                <td colspan="6">
+                    <div class="alert alert-info" role="alert">
+                        {% trans from 'messages' %}
+                            No records found!
+                        {% endtrans %}
+                    </div>
+                </td>
             </tr>
         {% endfor %}
         </tbody>
@@ -44,5 +57,4 @@
     <div class="row">
         <div class="col">{{ knp_pagination_render(pagination) }}</div>
     </div>
-    <a href="{{ path('product_new') }}">Create new</a>
 {% endblock %}

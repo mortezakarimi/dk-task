@@ -10,7 +10,6 @@
         {{ form_row(registrationForm.email) }}
         {{ form_row(registrationForm.plainPassword) }}
         {{ form_row(registrationForm.agreeTerms) }}
-
-        <button class="btn btn-primary">{{ 'Register' | trans }}</button>
+        {{ form_row(registrationForm.register) }}
     {{ form_end(registrationForm) }}
 {% endblock %}

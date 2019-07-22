@@ -1,38 +1,68 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Product{% endblock %}
+{% block title %}{{ "Product"|trans }}{% endblock %}
 
 {% block body %}
-    <h1>Product</h1>
-
-    <table class="table">
+    <h1>{{ "Product"|trans }}</h1>
+    <div class="row mb-3">
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class="col"><a class="btn btn-secondary" href="{{ path('product_edit', {'id': product.id}) }}"><i
+                        class="fas fa-edit"></i></a></div>
+            <div class="col text-center">{{ include('product/_delete_form.html.twig') }}</div>
+        {% endif %}
+        <div class="col">
+            <a class="btn btn-link float-left"
+               href="{{ is_granted('ROLE_ADMIN')?path('product_index'):path('app_homepage') }}">{{ "Back to list" | trans }}</a>
+        </div>
+    </div>
+    <table class="table table-bordered">
         <tbody>
+        <tr>
+            <th>#</th>
+            <td>{{ product.id }}</td>
+        </tr>
+        <tr>
+            <th>{{ "Title"|trans }}</th>
+            <td>{{ product.title }}</td>
+        </tr>
+        <tr>
+            <th>{{ "Description"|trans }}</th>
+            <td class="text-justify">{{ product.description }}</td>
+        </tr>
+        <tr>
+            <th rowspan="{{ product.variant|length +2 }}">{{ "Variant"|trans }}</th>
+        </tr>
+        <tr>
+            <th>
+                <div class="row">
+                    <div class="col">{{ "Color"|trans }}</div>
+                    <div class="col">{{ "Price"|trans }}</div>
+                </div>
+            </th>
+        </tr>
+        {% for variant in product.variant %}
             <tr>
-                <th>Id</th>
-                <td>{{ product.id }}</td>
+                <td>
+                    <div class="row">
+                        <div class="col">
+                            <span class="color float-right" data-toggle="tooltip" data-html="true"
+                                  title="{{ variant.color }}"
+                                  style="background-color:{{ variant.colorCode }}"></span><span
+                                class="colorName float-right ml-3">{{ variant.color }}</span>
+                        </div>
+                        <div class="col">{{ variant.price|localizednumber }}</div>
+                    </div>
+                </td>
             </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ product.title }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ product.description }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ product.createdAt ? product.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>UpdatedAt</th>
-                <td>{{ product.updatedAt ? product.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
+        {% endfor %}
+        <tr>
+            <th>{{ "CreatedAt"|trans }}</th>
+            <td>{{ product.createdAt ? product.createdAt|localizeddate('medium','medium',null,null,null,'traditional') : '' }}</td>
+        </tr>
+        <tr>
+            <th>{{ "UpdatedAt"|trans }}</th>
+            <td>{{ product.updatedAt ? product.updatedAt|localizeddate('medium','medium',null,null,null,'traditional') : '' }}</td>
+        </tr>
         </tbody>
     </table>
-
-    <a href="{{ path('product_index') }}">back to list</a>
-
-    <a href="{{ path('product_edit', {'id': product.id}) }}">edit</a>
-
-    {{ include('product/_delete_form.html.twig') }}
 {% endblock %}

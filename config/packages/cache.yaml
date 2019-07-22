@@ -18,5 +18,9 @@ framework:
         #app: cache.adapter.apcu
 
         # Namespaced pools use the above "app" backend by default
-        #pools:
-            #my.dedicated.cache: ~
+        pools:
+            cache.app.redis:
+                adapter: cache.adapter.redis
+                tags: cache.app.memcached
+            cache.app.memcached:
+                adapter: cache.adapter.memcached

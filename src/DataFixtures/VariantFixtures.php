@@ -10,12 +10,18 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class VariantFixtures extends BaseFixture implements DependentFixtureInterface
 {
+    public const TOTAL_VARIANT = 300;
+
     protected function loadData(ObjectManager $manager)
     {
-        $this->createMany(Variant::class, 500, function (Variant $variant, $count) {
-            $variant->setColor($this->faker->safeColorName)
+        $this->createMany(Variant::class, self::TOTAL_VARIANT, function (Variant $variant, $count) {
+            $colors = ['ffffff' => 'سفید', 'ff0000' => 'قرمز', '00ff00' => 'سبز', '0000ff' => 'آبی', 'ffff00' => 'زرد', 'ff00ff' => 'صورتی', '00ffff' => 'فیروزه‌ای', '888888' => 'خاکستری', '000000' => 'مشکی'];
+
+            $colorCode = $this->faker->randomKey($colors);
+            $variant->setColor($colors[$colorCode])
                 ->setPrice($this->faker->numberBetween(1000, 100000000))
-                ->setProduct($this->getReference(Product::class . '_' . $this->faker->unique(true)->numberBetween(1, 199)));
+                ->setColorCode($colorCode)
+                ->setProduct($this->getReference(Product::class . '_' . $this->faker->unique(true)->numberBetween(0, ProductFixtures::TOTAL_PRODUCT - 1)));
 
         });
         $manager->flush();

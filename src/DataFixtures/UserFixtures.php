@@ -21,6 +21,7 @@ class UserFixtures extends BaseFixture
         $this->createMany(User::class, 100, function (User $user, $count) {
             $user->setEmail($this->faker->email)
                 ->setNameFamily($this->faker->name)
+                ->setRoles([$this->faker->optional(0.5, '')->passthrough('ROLE_ADMIN')])
                 ->setPassword($this->passwordEncoder->encodePassword(
                     $user,
                     '123456'

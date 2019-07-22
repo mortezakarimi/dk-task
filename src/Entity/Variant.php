@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\BinaryType;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\VariantRepository")
@@ -27,10 +28,15 @@ class Variant
     private $price;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="variant")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="variant", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $product;
+
+    /**
+     * @ORM\Column(type="string", length=8)
+     */
+    private $colorCode;
 
     public function getId(): ?int
     {
@@ -69,6 +75,19 @@ class Variant
     public function setProduct(?Product $product): self
     {
         $this->product = $product;
+
+        return $this;
+    }
+
+    public function getColorCode(): ?string
+    {
+        return '#' . $this->colorCode;
+    }
+
+    public function setColorCode(string $colorCode): self
+    {
+        $colorCode = str_replace('#', '', $colorCode);
+        $this->colorCode = $colorCode;
 
         return $this;
     }

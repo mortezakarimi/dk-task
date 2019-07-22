@@ -1,7 +1,7 @@
 'An authentication exception occurred.': 'خطایی هنگام تعیین اعتبار اتفاق افتاد.'
 'Authentication credentials could not be found.': 'شرایط تعیین اعتبار پیدا نشد.'
 'Authentication request could not be processed due to a system problem.': 'درخواست تعیین اعتبار به دلیل مشکل سیستم قابل بررسی نیست.'
-'Invalid credentials.': 'شرایط نامعتبر.'
+'Invalid credentials.': 'ایمیل و یا رمز عبور نا معتبر.'
 'Cookie has already been used by someone else.': 'کوکی قبلا برای شخص دیگری استفاده شده است.'
 'Not privileged to request the resource.': 'دسترسی لازم برای درخواست این منبع را ندارید.'
 'Invalid CSRF token.': 'توکن CSRF معتبر نیست.'

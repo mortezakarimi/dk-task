@@ -14,8 +14,10 @@ fos_elastica:
                         variant:
                             type: object
                             properties:
-                                color: ~
-                                price: ~
+                                color:
+                                    type: keyword
+                                price:
+                                    type: integer
                     persistence:
                         driver: orm
                         model: App\Entity\Product

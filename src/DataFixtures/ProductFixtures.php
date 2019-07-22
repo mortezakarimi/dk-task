@@ -10,9 +10,11 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class ProductFixtures extends BaseFixture
 {
+    public const TOTAL_PRODUCT = 150;
+
     protected function loadData(ObjectManager $manager)
     {
-        $this->createMany(Product::class, 200, function (Product $product, $count) {
+        $this->createMany(Product::class, self::TOTAL_PRODUCT, function (Product $product, $count) {
             $product->setTitle($this->faker->realText(60))
                 ->setDescription($this->faker->realText(600));
 

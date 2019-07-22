@@ -3,19 +3,36 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Entity\Variant;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Cache\Adapter\TagAwareAdapter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use \IntlDateFormatter;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Extensions\DateExtension;
 
 /**
- * @Route("/product")
+ * @Route("/admin/product")
  */
 class ProductController extends AbstractController
 {
+    private $cachePool;
+
+    public function __construct(
+        TagAwareAdapter $cachePool
+    )
+    {
+        $this->cachePool = $cachePool;
+    }
+
     /**
      * @Route("/", name="product_index", methods={"GET"})
      */
@@ -47,7 +64,7 @@ class ProductController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($product);
             $entityManager->flush();
-
+            $this->cachePool->invalidateTags(['product_search']);
             return $this->redirectToRoute('product_index');
         }
 
@@ -68,16 +85,20 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="product_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="product_edit", methods={"GET","POST"}, requirements={"id":"\d+"})
      */
-    public function edit(Request $request, Product $product): Response
+    public function edit(int $id, Request $request, EntityManagerInterface $entityManager, TranslatorInterface $translator): Response
     {
+        if (($product = $entityManager->getRepository(Product::class)->find($id)) === null) {
+            throw $this->createNotFoundException($translator->trans('No product found for id: 0', [$id]));
+        }
+
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
+            $this->cachePool->invalidateTags(['product_search']);
             return $this->redirectToRoute('product_index');
         }
 
@@ -96,6 +117,7 @@ class ProductController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($product);
             $entityManager->flush();
+            $this->cachePool->invalidateTags(['product_search']);
         }
 
         return $this->redirectToRoute('product_index');

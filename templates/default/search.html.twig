@@ -1,8 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ app.request.query.get('s') is not empty?"Search" |trans ~ " : "~ app.request.query.get('s')|trim:"Product List"|trans }}{% endblock %}
+{% block title %}{{ 'Advance Search' | trans }}{% endblock %}
 
 {% block body %}
+    <h1>{{ 'Advance Search' | trans }}</h1>
+
+    {{ form_start(searchForm) }}
+        {{ form_row(searchForm.title) }}
+        {{ form_row(searchForm.description) }}
+        {{ form_row(searchForm.color) }}
+        {{ form_row(searchForm.minPrice) }}
+        {{ form_row(searchForm.maxPrice) }}
+        {{ form_row(searchForm.search) }}
+    {{ form_end(searchForm) }}
+    <hr>
+    <div class="row">
+        <p class="col">{{ "Total Result: 0"|trans([pagination.totalItemCount]) }}</p>
+    </div>
     {% for row in pagination|batch(3) %}
         <div class="row"><!-- Row -->
             {% for product in row %}

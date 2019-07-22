@@ -31,7 +31,7 @@ class Product
     private $description;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Variant", mappedBy="product", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Variant", mappedBy="product", orphanRemoval=true, cascade={"persist"})
      */
     private $variant;
 
@@ -90,10 +90,12 @@ class Product
     public function removeVariant(Variant $variant): self
     {
         if ($this->variant->contains($variant)) {
-            $this->variant->removeElement($variant);
-            // set the owning side to null (unless already changed)
-            if ($variant->getProduct() === $this) {
-                $variant->setProduct(null);
+            if ($this->variant->count() > 0) {
+                $this->variant->removeElement($variant);
+                // set the owning side to null (unless already changed)
+                if ($variant->getProduct() === $this) {
+                    $variant->setProduct(null);
+                }
             }
         }
 
