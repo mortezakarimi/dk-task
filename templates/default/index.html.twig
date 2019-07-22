@@ -3,6 +3,7 @@
 {% block title %}{{ app.request.query.get('s') is not empty?"Search" |trans ~ " : "~ app.request.query.get('s')|trim:"Product List"|trans }}{% endblock %}
 
 {% block body %}
+    <h1 class="text-center mb-5">{{ "Ecommerce site"|trans }}</h1>
     {% for row in pagination|batch(3) %}
         <div class="row"><!-- Row -->
             {% for product in row %}

@@ -27,8 +27,9 @@ class ProductRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('p')
             ->leftJoin('p.variant', 'v')
-            ->addSelect('v');
-        return $qb->orderBy('p.createdAt', 'DESC');
+            ->addSelect('v')
+            ->orderBy('p.createdAt', 'DESC');
+        return $qb;
     }
 
     // /**

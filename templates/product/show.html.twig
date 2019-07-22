@@ -57,11 +57,11 @@
         {% endfor %}
         <tr>
             <th>{{ "CreatedAt"|trans }}</th>
-            <td>{{ product.createdAt ? product.createdAt|localizeddate('medium','medium',null,null,null,'traditional') : '' }}</td>
+            <td>{{ product.createdAt ? product.createdAt|localizeddate('medium','medium',null,'Asia/Tehran',null,'traditional') : '' }}</td>
         </tr>
         <tr>
             <th>{{ "UpdatedAt"|trans }}</th>
-            <td>{{ product.updatedAt ? product.updatedAt|localizeddate('medium','medium',null,null,null,'traditional') : '' }}</td>
+            <td>{{ product.updatedAt ? product.updatedAt|localizeddate('medium','medium',null,'Asia/Tehran',null,'traditional') : '' }}</td>
         </tr>
         </tbody>
     </table>

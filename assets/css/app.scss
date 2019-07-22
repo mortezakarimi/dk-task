@@ -34,3 +34,12 @@ label.required {
   display: inline-block;
 }
 
+.desc:after {
+  content: " ▾";
+  font-family: Arial, sans-serif;
+}
+
+.asc:after {
+  content: " ▴";
+  font-family: Arial, sans-serif;
+}

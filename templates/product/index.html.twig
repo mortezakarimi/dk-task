@@ -9,10 +9,11 @@
     <table class="table">
         <thead>
         <tr>
-            <th>#</th>
-            <th>{{ "Title" |trans }}</th>
+            <th>{{ knp_pagination_sortable(pagination, '#', 'p.id') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, "Title" |trans, 'p.title') }}</th>
             <th>{{ "Description" |trans }}</th>
             <th>{{ "Color" |trans }}</th>
+            <th>{{ knp_pagination_sortable(pagination, "CreatedAt" |trans, 'p.createdAt') }}</th>
             <th>{{ "Actions" |trans }}</th>
         </tr>
         </thead>
@@ -29,7 +30,7 @@
                               style="background-color:{{ variant.colorCode }}"></span>
                     {% endfor %}
                 </td>
-                {#                <td>{{ product.createdAt ? product.createdAt|date('Y-m-d H:i:s', "Asia/Tehran") : '' }}</td>#}
+                <td>{{ product.createdAt ? product.createdAt|localizeddate('medium','medium',null,'Asia/Tehran',null,'traditional') : '' }}</td>
                 {#                <td>{{ product.updatedAt ? product.updatedAt|date('Y-m-d H:i:s') : '' }}</td>#}
                 <td class="text-nowrap">
                     <a class="btn btn-link btn-block m-0 p-0" href="{{ path('product_show', {'id': product.id}) }}"><i
