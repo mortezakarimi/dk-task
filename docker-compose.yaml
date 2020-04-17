@@ -1,0 +1,83 @@
+version: '3.7'
+
+volumes:
+    app:
+    database_data:
+    es_data:
+        driver: local
+networks:
+    symfony_net:
+
+services:
+    php:
+        build:
+            context: .
+            dockerfile: app/Dockerfile
+        restart: on-failure
+        env_file:
+            - .env
+        volumes:
+            - app:/usr/src/app
+        user: 1000:1000
+        depends_on:
+            - database
+            - memcached
+            - redis
+            #            - composer
+            - elasticsearch
+        networks:
+            - symfony_net
+    database:
+        image: mysql:8
+        volumes:
+            - database_data:/var/lib/mysql
+        restart: always
+        expose:
+          - 3306
+        ports: [3306]
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: dk_task
+            MYSQL_USER: dk_user
+            MYSQL_PASSWORD: dk_pass
+        labels:
+            com.symfony.server.service-prefix: 'DATABASE'
+        networks:
+            - symfony_net
+    adminer:
+        image: adminer
+        restart: always
+        environment:
+            ADMINER_DEFAULT_SERVER: database
+        ports:
+            - 8080:8080
+        networks:
+            - symfony_net
+    nginx:
+        image: nginx:alpine
+        volumes:
+            - ./default.conf:/etc/nginx/conf.d/default.conf:ro
+            - ./app/public/:/var/www/app
+        ports:
+            - 80:80
+        depends_on:
+            - database
+            - php
+        networks:
+            - symfony_net
+    memcached:
+        image: "memcached:alpine"
+        networks:
+            - symfony_net
+    redis:
+        image: "redis:alpine"
+        networks:
+            - symfony_net
+    elasticsearch:
+        image: "elasticsearch:6.8.8"
+        volumes:
+            - es_data:/usr/share/elasticsearch/data
+        ports:
+            - 9200:9200
+        networks:
+            - symfony_net

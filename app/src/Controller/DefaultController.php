@@ -3,28 +3,22 @@
 namespace App\Controller;
 
 use App\Entity\Product;
-use App\Form\ProductType;
 use App\Form\SearchType;
 use App\Repository\SearchRepository;
-use Elastica\Processor\Json;
+use Elastica\Query\BoolQuery;
+use Elastica\Query\Match;
+use Elastica\Query\MatchPhrase;
+use Elastica\Query\Range;
 use Elastica\Query\Term;
 use FOS\ElasticaBundle\Manager\RepositoryManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
-use Symfony\Component\Cache\Adapter\MemcachedAdapter;
-use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Symfony\Component\Cache\Adapter\TagAwareAdapter;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Cache\ItemInterface;
-use \Elastica\Query\MatchPhrase;
-use \Elastica\Query\Range;
-use \Elastica\Query\Match;
-use \Elastica\Query\BoolQuery;
 
 class DefaultController extends AbstractController
 {
