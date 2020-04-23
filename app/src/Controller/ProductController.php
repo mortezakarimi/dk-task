@@ -3,26 +3,20 @@
 namespace App\Controller;
 
 use App\Entity\Product;
-use App\Entity\Variant;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use phpDocumentor\Reflection\Types\Integer;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Cache\Adapter\TagAwareAdapter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use \IntlDateFormatter;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Extensions\DateExtension;
 
 /**
  * @Route("/admin/product")
  */
-class ProductController extends AbstractController
+class ProductController extends BaseController
 {
     private $cachePool;
 

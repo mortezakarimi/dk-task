@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Form\SearchType;
-use App\Repository\SearchRepository;
 use Elastica\Query\BoolQuery;
 use Elastica\Query\Match;
 use Elastica\Query\MatchPhrase;
@@ -12,7 +11,6 @@ use Elastica\Query\Range;
 use Elastica\Query\Term;
 use FOS\ElasticaBundle\Manager\RepositoryManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Cache\Adapter\TagAwareAdapter;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Cache\ItemInterface;
 
-class DefaultController extends AbstractController
+class DefaultController extends BaseController
 {
 
     private $cachePool;
@@ -38,6 +36,7 @@ class DefaultController extends AbstractController
      * @param RepositoryManagerInterface $repository
      * @param PaginatorInterface $paginator
      * @return Response
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function index(Request $request, RepositoryManagerInterface $repository, PaginatorInterface $paginator): Response
     {
@@ -77,6 +76,11 @@ class DefaultController extends AbstractController
 
     /**
      * @Route("/search", name="advance_search", methods={"GET"})
+     * @param Request $request
+     * @param RepositoryManagerInterface $repository
+     * @param PaginatorInterface $paginator
+     * @return Response
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function advanceSearch(Request $request, RepositoryManagerInterface $repository, PaginatorInterface $paginator): Response
     {

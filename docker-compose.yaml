@@ -2,6 +2,7 @@ version: '3.7'
 
 volumes:
     app:
+        driver: local
     database_data:
     es_data:
         driver: local
@@ -9,10 +10,9 @@ networks:
     symfony_net:
 
 services:
-    php:
-        build:
-            context: .
-            dockerfile: app/Dockerfile
+    webapp:
+        build: ./app
+        image: dk-task_php:1.0.2
         restart: on-failure
         env_file:
             - .env
@@ -62,7 +62,7 @@ services:
             - 80:80
         depends_on:
             - database
-            - php
+            - webapp
         networks:
             - symfony_net
     memcached:
