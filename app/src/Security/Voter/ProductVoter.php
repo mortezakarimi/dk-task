@@ -5,10 +5,21 @@ namespace App\Security\Voter;
 use App\Entity\Product;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class ProductVoter extends Voter
 {
+    /**
+     * @var Security
+     */
+    private $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
     protected function supports($attribute, $subject)
     {
         // replace with your own logic
@@ -35,6 +46,12 @@ class ProductVoter extends Voter
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case 'PRODUCT_EDIT':
+                if ($this->security->isGranted('ROLE_PRODUCT_ADMIN') || $this->security->isGranted('ROLE_ADMIN')) {
+                    return true;
+                }
+                if ($subject->getAuthor() === $user) {
+                    return true;
+                }
                 // logic to determine if the user can EDIT
                 // return true or false
                 break;

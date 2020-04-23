@@ -3,22 +3,34 @@
 namespace App\DataFixtures;
 
 use App\Entity\Product;
-use App\Entity\Variant;
-use Doctrine\Bundle\FixturesBundle\Fixture;
+use App\Entity\User;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
-class ProductFixtures extends BaseFixture
+class ProductFixtures extends BaseFixture implements DependentFixtureInterface
 {
     public const TOTAL_PRODUCT = 150;
 
     protected function loadData(ObjectManager $manager)
     {
         $this->createMany(Product::class, self::TOTAL_PRODUCT, function (Product $product, $count) {
+            /** @var User $user */
+            $user = $this->getRandomReference(User::class);
             $product->setTitle($this->faker->realText(60))
-                ->setDescription($this->faker->realText(600));
+                ->setDescription($this->faker->realText(600))
+                ->setAuthor($user);
 
         });
         $manager->flush();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getDependencies()
+    {
+        return [
+            UserFixtures::class
+        ];
     }
 }

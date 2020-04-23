@@ -1,8 +1,6 @@
 version: '3.7'
 
 volumes:
-    app:
-        driver: local
     database_data:
     es_data:
         driver: local
@@ -17,7 +15,7 @@ services:
         env_file:
             - .env
         volumes:
-            - app:/usr/src/app
+            - ./app:/usr/src/app
         user: 1000:1000
         depends_on:
             - database
